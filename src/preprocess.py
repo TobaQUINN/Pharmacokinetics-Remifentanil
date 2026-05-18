@@ -183,9 +183,13 @@ print('Encoded Sex Distribution: Male =1, Female = 0')
 # Saving Encoded data
 df_eng.to_csv('data/Remifentanil_encoded.csv', index=False)
 
-# Removind original un encoded 'Sex' column
+
 df_encoded = pd.read_csv('data/Remifentanil_encoded.csv')
-df_encoded = df_encoded.drop(columns=['Sex'])
+
+cols_to_drop = [c for c in ['Sex', 'conc',
+                            'rownames'] if c in df_encoded.columns]
+if cols_to_drop:
+    df_encoded = df_encoded.drop(columns=cols_to_drop)
 
 df_encoded.to_csv('data/Remifentanil_preprocessed.csv', index=False)
 
@@ -197,12 +201,15 @@ print("=" * 40)
 
 # Dropping columns that would not be used as features
 
-columns_to_drop = [
-    'rownames',        # Just an index
-    'Subject',         # Already dropped (duplicate of ID)
-    'conc',            # Original target (log_conc instead)
-    'Sex',             # Replaced with Sex_Encoded
-]
+df_encoded = pd.read_csv('data/Remifentanil_encoded.csv')
+
+cols_to_drop = [c for c in ['Sex', 'conc',
+                            'rownames', 'Subject'] if c in df_encoded.columns]
+if cols_to_drop:
+    df_encoded = df_encoded.drop(columns=cols_to_drop)
+
+df_encoded.to_csv('data/Remifentanil_preprocessed.csv', index=False)
+
 
 feature_columns = [
     # Time features
