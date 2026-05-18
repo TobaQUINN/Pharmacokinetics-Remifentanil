@@ -65,7 +65,7 @@ print("Invalid Rate values present: ",
       (df['Rate'] < 0).values.any())
 print("Invalid Time values present: ",
       (df['Time'] < 0).values.any())
-# Catching data quality issuesearly to prevent mysterious model failures
+# Catching data quality issues early to prevent mysterious model failures later
 
 # Saving cleaned data
 df.to_csv('data/Remifentanil_cleaned.csv', index=False)
