@@ -21,8 +21,8 @@ plt.subplot(1, 3, 3)
 sns.histplot(data['Ht'], bins=20, kde=True)
 plt.title('Height Distribution')
 plt.tight_layout()
-plt.show()
 plt.savefig('plots/age_weight_height_distribution.png')
+plt.show()
 
 
 # BMI and LBM Distributions
@@ -35,15 +35,15 @@ plt.subplot(1, 2, 2)
 sns.histplot(data['LBM'], bins=20, kde=True)
 plt.title('LBM Distribution')
 plt.tight_layout()
-plt.show()
 plt.savefig('plots/bmi_lbm_distribution.png')
+plt.show()
+
 
 # ==========================================================
 # PK Temporal Plots
 # ==========================================================
 
 # Log Concentration vs TimeDelta
-
 
 
 # Infusion rate vs Time & Cumulative Dose vs Time
@@ -55,8 +55,8 @@ plt.subplot(1, 2, 2)
 sns.lineplot(x='Time', y='CumulativeDose', data=data, ci=None)
 plt.title('Cumulative Dose vs Time')
 plt.tight_layout()
+plt.savefig('plots/infusion_rate_cumulative_dose.png')
 plt.show()
-plt.save_fig('plots/infusion_rate_cumulative_dose.png')
 
 
 # ===========================================================
@@ -68,5 +68,5 @@ plt.figure(figsize=(6, 4))
 sns.scatterplot(x='CumulativeDose', y='log_conc', data=data, alpha=0.5)
 plt.title('Log Concentration vs Cumulative Dose')
 plt.tight_layout()
-plt.show()
 plt.savefig('plots/log_conc_vs_cumulative_dose.png')
+plt.show()

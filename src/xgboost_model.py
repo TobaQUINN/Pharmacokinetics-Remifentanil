@@ -13,6 +13,7 @@ from sklearn.metrics import (
 
 # Plotting
 import matplotlib.pyplot as plt
+import shap
 
 
 # Load preprocessed data
@@ -125,6 +126,9 @@ print(f"XGBoost Model MAE: {mae:.4f}")
 print(f"XGBoost Model MSE: {mse:.4f}")
 print(f"XGBoost Model R²: {r2:.4f}")
 
+# Saving model
+xgboost_model.save_model('src/app/models/xgboost_model.json')
+
 
 # Checking Feature Importance
 
@@ -167,5 +171,116 @@ plt.title(
 
 plt.gca().invert_yaxis()
 plt.tight_layout()
-plt.show()
 plt.savefig('plots/xgboost_feature_importance.png')
+plt.show()
+
+
+# Validation for:
+# - PK realism
+# - temporal stability
+# - explainability
+# - robustness
+
+print('=' * 40)
+print("MODEL VALIDATION PLOTS")
+print('=' * 40)
+
+# ============================================
+# 1. PREDICTED VS ACTUAL PLOT
+# ============================================
+
+# Predict concentrations
+y_pred = xgboost_model.predict(X_test)
+
+plt.figure(figsize=(7, 7))
+
+plt.scatter(
+    y_test,
+    y_pred,
+    alpha=0.6
+)
+
+# Perfect prediction line
+min_val = min(y_test.min(), y_pred.min())
+max_val = max(y_test.max(), y_pred.max())
+
+plt.plot(
+    [min_val, max_val],
+    [min_val, max_val],
+    linestyle='--'
+)
+
+plt.xlabel("Actual Concentration")
+plt.ylabel("Predicted Concentration")
+plt.title("Predicted vs Actual Concentrations")
+plt.savefig('plots/xgboost_predicted_vs_actual.png')
+plt.show()
+
+
+# ============================================
+# 2. PATIENT TRAJECTORY PLOTS
+# ============================================
+
+# Visualize concentration-time curves
+# for random test patients
+
+random_patients = np.random.choice(
+    test_df['ID'].unique(),
+    size=3,
+    replace=False
+)
+
+for patient_id in random_patients:
+
+    patient_data = test_df[
+        test_df['ID'] == patient_id
+    ].copy()
+
+    # Features
+    X_patient = patient_data[features]
+
+    # Predict
+    patient_pred = xgboost_model.predict(X_patient)
+
+    plt.figure(figsize=(10, 5))
+
+    plt.plot(
+        patient_data['Time'],
+        patient_data['Log_conc'],
+        label='Actual'
+    )
+
+    plt.plot(
+        patient_data['Time'],
+        patient_pred,
+        label='Predicted'
+    )
+    plt.xlabel("Time")
+    plt.ylabel("Log Concentration")
+    plt.title(
+        f"Patient {patient_id} PK Trajectory"
+    )
+    plt.legend()
+    plt.savefig(f'plots/patient_{patient_id}_trajectory.png')
+    plt.show()
+
+
+# ============================================
+# 3. SHAP EXPLAINABILITY
+# ============================================
+
+# SHAP explains:
+# WHY the model predicts what it predicts
+
+explainer = shap.TreeExplainer(xgboost_model)
+
+# Use smaller sample for speed
+X_shap = X_test.sample(200, random_state=42)
+
+shap_values = explainer.shap_values(X_shap)
+
+# Summary plot
+shap.summary_plot(
+    shap_values,
+    X_shap
+)
