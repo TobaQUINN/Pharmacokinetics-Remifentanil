@@ -1,3 +1,4 @@
+import xgboost as xgb
 import pandas as pd
 import numpy as np
 
@@ -128,6 +129,7 @@ print(f"XGBoost Model R²: {r2:.4f}")
 
 # Saving model
 xgboost_model.save_model('src/app/models/xgboost_model.json')
+xgboost_model.save_model('src/app/models/xgboost_model.ubj')
 
 
 # Checking Feature Importance
@@ -263,24 +265,3 @@ for patient_id in random_patients:
     plt.legend()
     plt.savefig(f'plots/patient_{patient_id}_trajectory.png')
     plt.show()
-
-
-# ============================================
-# 3. SHAP EXPLAINABILITY
-# ============================================
-
-# SHAP explains:
-# WHY the model predicts what it predicts
-
-explainer = shap.TreeExplainer(xgboost_model)
-
-# Use smaller sample for speed
-X_shap = X_test.sample(200, random_state=42)
-
-shap_values = explainer.shap_values(X_shap)
-
-# Summary plot
-shap.summary_plot(
-    shap_values,
-    X_shap
-)
