@@ -19,14 +19,14 @@ This keeps architecture modular.
 
 from fastapi import FastAPI
 
-from schemas import (
+from app.schemas import (
     PKEvent,
     PredictionResponse
 )
 
-from inference import PKInferenceEngine
+from app.inference import PKInferenceEngine
 
-from state_manager import reset_patient
+from app.state_manager import reset_patient
 
 
 # ============================================

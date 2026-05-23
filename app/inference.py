@@ -20,7 +20,7 @@ import numpy as np
 
 from xgboost import XGBRegressor
 
-from state_manager import (
+from app.state_manager import (
     get_patient_state,
     update_patient_state
 )
