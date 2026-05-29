@@ -22,86 +22,53 @@ Production systems would likely use:
 - MongoDB
 """
 
-# ============================================
-# IN-MEMORY STATE STORE
-# ============================================
+from collections import defaultdict
 
-patient_states = {}
+# Stores patient states
+patient_states = defaultdict(dict)
 
-
-# ============================================
-# INITIALIZE PATIENT
-# ============================================
 
 def initialize_patient(patient_id):
-    """
-    Creates default patient state
-    if patient does not exist.
-    """
 
     if patient_id not in patient_states:
 
         patient_states[patient_id] = {
-
             "last_time": 0.0,
-
-            "cum_dose": 0.0,
-
-            "last_rate": 0.0
+            "CumulativeDose": 0.0,
+            "history": []
         }
 
 
-# ============================================
-# GET PATIENT STATE
-# ============================================
-
 def get_patient_state(patient_id):
-    """
-    Retrieves patient state.
-    """
 
     initialize_patient(patient_id)
 
     return patient_states[patient_id]
 
 
-# ============================================
-# UPDATE PATIENT STATE
-# ============================================
-
 def update_patient_state(
     patient_id,
-    last_time,
-    cum_dose,
-    last_rate
+    time,
+    amt,
+    prediction,
+    concentration
 ):
-    """
-    Updates stored patient state.
-    """
 
-    patient_states[patient_id] = {
+    state = get_patient_state(patient_id)
 
-        "last_time": last_time,
+    TimeDelta = max(0, time - get_patient_state(patient_id)["last_time"])
 
-        "cum_dose": cum_dose,
+    state["last_time"] = time
 
-        "last_rate": last_rate
-    }
+    state["history"].append({
+        "Time(s)": time,
+        "Dose Amount(ng)": amt,
+        "Prediction(Log Concentration)": prediction,
+        "Plasma Concentration(ng/mL)": concentration,
+    })
 
-
-# ============================================
-# RESET PATIENT
-# ============================================
 
 def reset_patient(patient_id):
-    """
-    Clears patient state.
-    """
 
     if patient_id in patient_states:
-
         del patient_states[patient_id]
-
-        return True
-
-    return False
