@@ -322,6 +322,10 @@ http://localhost:8501
 
 ---
 
+Live ML Application: [Remifentanil Pharmacokinetics Streamlit App](https://remifentanil-pharmacokineticsml.streamlit.app/)
+
+---
+
 # Lessons Learned
 
 This project evolved far beyond model training.
