@@ -13,7 +13,7 @@ from app.state_manager import (
 
 import xgboost as xgb
 
-model = xgb.XGBRegressor()
+model = xgb.Booster()
 model.load_model("app/models/xgboost_model.json")
 
 
