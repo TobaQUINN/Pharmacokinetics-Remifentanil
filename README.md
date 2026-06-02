@@ -250,9 +250,7 @@ Additional validation included:
 * Predicted vs Actual analysis
 * Residual analysis
 * Patient trajectory visualization
-* SHAP explainability
 * Out-of-distribution testing
-* Stress testing
 
 ---
 
