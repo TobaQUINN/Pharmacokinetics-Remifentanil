@@ -126,7 +126,8 @@ if st.session_state.initialized:
 
         features = engineer_features(state, raw_input)
 
-        log_conc_pred = model.predict(features)[0]
+        dmatrix = xgb.DMatrix(features)
+        log_conc_pred = model.predict(dmatrix)[0]
         conc_pred = np.exp(log_conc_pred)
 
         update_patient_state(
