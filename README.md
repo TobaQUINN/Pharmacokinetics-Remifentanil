@@ -250,9 +250,7 @@ Additional validation included:
 * Predicted vs Actual analysis
 * Residual analysis
 * Patient trajectory visualization
-* SHAP explainability
 * Out-of-distribution testing
-* Stress testing
 
 ---
 
@@ -321,6 +319,10 @@ Open:
 ```text
 http://localhost:8501
 ```
+
+---
+
+Live ML Application: [Remifentanil Pharmacokinetics Streamlit App](https://remifentanil-pharmacokineticsml.streamlit.app/)
 
 ---
 
