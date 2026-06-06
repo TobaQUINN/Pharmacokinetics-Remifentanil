@@ -8,7 +8,7 @@ def compute_bmi(weight, height_cm):
     return weight / (height_m ** 2)
 
 
-def engineer_features(
+def engineer_input_features(
     patient_state,
     raw_input
 ):
@@ -35,10 +35,7 @@ def engineer_features(
     TimeDelta = time - patient_state["last_time"]
 
     # Cumulative dose
-    previous_dose = patient_state["CumulativeDose"]
-
-    cumulative_dose = patient_state["CumulativeDose"]
-    cumulative_dose += amt + (rate * TimeDelta)
+    cumulative_dose += amt
 
     # Infusion status
     infusion_active = 1 if rate > 0 else 0
