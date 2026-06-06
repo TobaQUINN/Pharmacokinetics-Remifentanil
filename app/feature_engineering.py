@@ -35,6 +35,7 @@ def engineer_input_features(
     TimeDelta = time - patient_state["last_time"]
 
     # Cumulative dose
+    cumulative_dose = patient_state["CumulativeDose"]
     cumulative_dose += amt
 
     # Infusion status

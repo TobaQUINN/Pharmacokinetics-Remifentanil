@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from app.feature_engineering import engineer_features, compute_bmi
+from app.feature_engineering import engineer_input_features, compute_bmi
 from app.state_manager import (
     initialize_patient,
     get_patient_state,
@@ -119,7 +119,7 @@ if st.session_state.initialized:
             "LBM": st.session_state.raw_state["LBM"]
         }
 
-        features = engineer_features(state, raw_input)
+        features = engineer_input_features(state, raw_input)
 
         dmatrix = xgb.DMatrix(features)
         log_conc_pred = model.predict(dmatrix)[0]
@@ -127,8 +127,8 @@ if st.session_state.initialized:
 
         update_patient_state(
             patient_id,
-            time= time,
-            amt= amt,
+            time=time,
+            amt=amt,
             prediction=log_conc_pred,
             concentration=conc_pred
         )
