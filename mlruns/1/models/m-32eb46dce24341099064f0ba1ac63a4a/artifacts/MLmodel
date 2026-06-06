@@ -1,0 +1,36 @@
+artifact_path: file:C:/Users/DARA2/Documents/GitHub/Pharmacokinetics-Remifentanil/mlruns/1/models/m-32eb46dce24341099064f0ba1ac63a4a/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.13.5
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.0.2
+is_signature_from_type_hint: false
+mlflow_version: 3.13.0
+model_id: m-32eb46dce24341099064f0ba1ac63a4a
+model_size_bytes: 1085366
+model_uuid: m-32eb46dce24341099064f0ba1ac63a4a
+prompts: null
+run_id: 193186c1b3104ad1938826b55b088c53
+signature:
+  inputs: '[{"type": "double", "name": "Time", "required": true}, {"type": "double",
+    "name": "TimeDelta", "required": true}, {"type": "double", "name": "Rate", "required":
+    true}, {"type": "double", "name": "Amt", "required": true}, {"type": "double",
+    "name": "CumulativeDose", "required": true}, {"type": "long", "name": "InfusionActive",
+    "required": true}, {"type": "double", "name": "Age", "required": true}, {"type":
+    "long", "name": "Sex_Encoded", "required": true}, {"type": "long", "name": "Ht",
+    "required": true}, {"type": "double", "name": "Wt", "required": true}, {"type":
+    "double", "name": "BSA", "required": true}, {"type": "double", "name": "LBM",
+    "required": true}, {"type": "double", "name": "BMI", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-06-06 02:30:45.868922'

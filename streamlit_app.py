@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from app.feature_engineering import engineer_features, compute_bmi
+from app.feature_engineering import engineer_input_features, compute_bmi
 from app.state_manager import (
     initialize_patient,
     get_patient_state,
@@ -45,9 +45,6 @@ with st.sidebar.form("init_form"):
     patient_id = st.text_input("Patient ID")
     time = st.number_input("Initial Time", value=0.0)
 
-    rate = st.number_input("Rate", value=0.0)
-    amt = st.number_input("Amount", value=0.0)
-
     age = st.number_input("Age", value=30)
     sex = st.selectbox("Sex", ["Male", "Female"])
 
@@ -68,8 +65,6 @@ if submit:
 
     st.session_state.raw_state = {
         "Time": time,
-        "Rate": rate,
-        "Amt": amt,
         "Age": age,
         "Wt": wt,
         "Ht": ht,
@@ -91,10 +86,10 @@ if st.session_state.initialized:
     col1, col2 = st.columns(2)
 
     with col1:
-        new_time = st.number_input(
+        time = st.number_input(
             "Time (current step)", value=0.0, key="time_live")
-        new_rate = st.number_input("Rate", value=0.0, key="rate_live")
-        new_amt = st.number_input("Amt", value=0.0, key="amt_live")
+        rate = st.number_input("Rate", value=0.0, key="rate_live")
+        amt = st.number_input("Amt", value=0.0, key="amt_live")
 
     with col2:
         run_step = st.button("Run Prediction Step")
@@ -113,9 +108,9 @@ if st.session_state.initialized:
         state = get_patient_state(patient_id)
 
         raw_input = {
-            "Time": new_time,
-            "Rate": new_rate,
-            "Amt": new_amt,
+            "Time": time,
+            "Rate": rate,
+            "Amt": amt,
             "Age": st.session_state.raw_state["Age"],
             "Sex": st.session_state.raw_state["Sex"],
             "Wt": st.session_state.raw_state["Wt"],
@@ -124,7 +119,7 @@ if st.session_state.initialized:
             "LBM": st.session_state.raw_state["LBM"]
         }
 
-        features = engineer_features(state, raw_input)
+        features = engineer_input_features(state, raw_input)
 
         dmatrix = xgb.DMatrix(features)
         log_conc_pred = model.predict(dmatrix)[0]
@@ -132,8 +127,8 @@ if st.session_state.initialized:
 
         update_patient_state(
             patient_id,
-            time=new_time,
-            amt=new_amt,
+            time=time,
+            amt=amt,
             prediction=log_conc_pred,
             concentration=conc_pred
         )
